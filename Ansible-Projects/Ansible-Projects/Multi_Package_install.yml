@@ -1,0 +1,22 @@
+---
+- name: Playbook to install multiple packages
+  hosts: dev
+  become: yes
+  vars:
+    packages:
+      - httpd
+      - git
+      - wget
+  tasks:
+    - name: install the packages
+      yum:
+        name: {{ item }}
+        state: latest
+      loop: "{{ packages }}"
+      notify: Start httpd service
+
+  handlers:
+    - name: Start httpd service
+      service:
+        name: httpd
+        state: started
