@@ -1,0 +1,14 @@
+#Simple Playbook to create a user
+---
+- name: Create a user on remote hosts
+  hosts: all
+  become: yes
+  vars:
+    user_name: "my_user"
+    password: "{{ 'mypassword' | password_hash('sha512') }}"
+  tasks:
+    - name: Create a new user
+      user:
+        name: "{{ user_name }}"
+        password: "{{ password }}"
+        state: present
